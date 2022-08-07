@@ -1,0 +1,89 @@
+h1 {
+  font-family: "Roboto Slab", serif;
+  color: #9896f1;
+  font-size: 36px;
+}
+
+body {
+  font-family: "Roboto Slab", serif;
+}
+
+#root {
+  max-width: 800px;
+  margin: 20px 0 0 20px;
+  padding: 50px 80px;
+  /* background: linear-gradient(to right, rgb(33, 33, 30), rgb(46, 52, 64)); */
+  /* rgb(243, 244, 227), rgb(225, 232, 247)); */
+  border-radius: 20px;
+  border: solid;
+  border-color: #9896f1;
+  background-color: #f6fdfc;
+}
+
+.container {
+  position: fixed;
+  left: 20px;
+  top: 20px;
+}
+
+.form {
+  margin: 4px 0 4px 0;
+}
+
+.input-group-text .border-0 {
+  color: #65e6d1;
+}
+
+.sunny-icon {
+  max-width: 56px;
+  margin: 8px 0;
+}
+
+.weather-day {
+  margin: 16px 0 4px;
+  color: #9896f1;
+}
+
+.weather-date {
+  color: #d59bf6;
+}
+
+.temperature-main,
+.degrees-main {
+  font-size: 36px;
+  font-family: "Roboto Slab", serif;
+  color: #9896f1;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.data-main {
+  color: #212529;
+}
+
+.data-main-green {
+  color: #d59bf6;
+}
+
+.WeatherForecastCard {
+  text-align: center;
+}
+
+.weatherCard-temp {
+  text-align: center;
+}
+
+.weatherCard-temp-max {
+  color: #d59bf6;
+}
+
+.weatherCard-temp-min {
+  color: #edb1f1;
+  margin-left: 10px;
+}
+
+#temperature-description {
+  text-transform: capitalize;
+}
