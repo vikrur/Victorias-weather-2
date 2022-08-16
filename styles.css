@@ -10,14 +10,13 @@ body {
 
 #root {
   max-width: 800px;
-  margin: 20px 0 0 20px;
-  padding: 50px 80px;
+  margin: 10px 0 0 0px;
+  padding: 8px 0;
   /* background: linear-gradient(to right, rgb(33, 33, 30), rgb(46, 52, 64)); */
   /* rgb(243, 244, 227), rgb(225, 232, 247)); */
   border-radius: 20px;
   border: solid;
   border-color: #9896f1;
-  background-color: #f6fdfc;
 }
 
 .container {
@@ -86,4 +85,19 @@ body {
 
 #temperature-description {
   text-transform: capitalize;
+}
+
+.farenheit,
+.celcius {
+  text-decoration: none;
+  font-size: 24px;
+}
+
+.temp .active {
+  color: black;
+  cursor: default;
+}
+
+.temp .active:hover {
+  text-decoration: none;
 }
