@@ -39,15 +39,6 @@ function insertActualData() {
     "Saturday",
   ];
 
-  //   function formatDate(timestamp) {
-  //     console.log(`this is ${timestamp}`);
-  //     let date = new Date(timestamp * 1000);
-  //     let day = date.getDay();
-  //     let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-  //     return days[day];
-  //   }
-
   // define time variables
   let dayName = days[date.getDay()];
 
@@ -78,13 +69,14 @@ function getForecast(coordinates) {
 function showTemperature(response) {
   console.log(response.data);
   document.querySelector("#city").innerHTML = response.data.name;
-  let temperature = Math.round(response.data.main.temp);
+  celciusTemperature = response.data.main.temp;
+  let temperature = Math.round(celciusTemperature);
   let temperatureElement = document.querySelector("#temperature-main");
   let temperatureDescription = document.querySelector(
     "#temperature-description"
   );
 
-  temperatureElement.innerHTML = `${temperature}°C`;
+  temperatureElement.innerHTML = `${temperature}`;
   temperatureDescription.innerHTML = response.data.weather[0].description;
 
   let windSpeed = response.data.wind.speed;
@@ -165,6 +157,24 @@ function displayForecast(response) {
   forecastElement.innerHTML = forecastHTML;
 }
 
+function convertToFarenheit(event) {
+  event.preventDefault();
+  let temperatureElement = document.querySelector("#temperature-main");
+  temperatureElement.innerHTML = Math.round((celciusTemperature * 9) / 5 + 32);
+  celciusLink.classList.remove("active");
+  farenheitLink.classList.add("active");
+}
+
+function convertToCelcius(event) {
+  event.preventDefault();
+  let temperatureElement = document.querySelector("#temperature-main");
+  temperatureElement.innerHTML = Math.round(celciusTemperature);
+  celciusLink.classList.add("active");
+  farenheitLink.classList.remove("active");
+}
+
+let celciusTemperature = null;
+
 // Feature #0 this function shows the current city on the main page(depends on the variable "city")
 showCity();
 
@@ -180,3 +190,9 @@ searchForm.addEventListener("click", handleSubmit);
 
 // Feature #3 Display cards
 // displayForecast();
+
+let farenheitLink = document.querySelector("#farenheit-link");
+farenheitLink.addEventListener("click", convertToFarenheit);
+
+let celciusLink = document.querySelector("#celcius-link");
+celciusLink.addEventListener("click", convertToCelcius);
