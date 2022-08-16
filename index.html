@@ -1,112 +1,198 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="styles.css" rel="stylesheet" />
+// this code shows the current city on the main page(depends on the variable "city")
+let apiKey = "10bd46f37313c8932e7471e0289ef79a";
+let city = "Kyiv";
+let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
-    <title>Victoria's Weather</title>
+function showCity() {
+  let city = "Kyiv";
+  let heading = document.querySelector("#city");
+  heading.innerHTML = city;
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://kit.fontawesome.com/74f29922c9.js"
-      crossorigin="anonymous"
-    ></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  </head>
-  <body>
-    <!-- Changed all dives-->
-    <div id="root">
-      <div class="App">
-        <div class="container-sm">
-          <form class="search-form" id="search-form">
-            <div class="row">
-              <div class="col-1"></div>
-              <div class="col-6 d-flex justify-content-left">
-                <div class="form">
-                  <div class="input-group rounded" id="searchbutton">
-                    <input
-                      type="search"
-                      class="form-control rounded form-control-color"
-                      placeholder="Search the city"
-                      aria-label="Search"
-                      aria-describedby="search-addon"
-                      id="search-input"
-                      autocomplete="off"
-                    />
-                    <!-- Change -->
+  //   console.log(heading);
+}
+// dont touch (formatDate(currentTime) func)
+function insertActualData() {
+  let date = new Date();
+  let dayNumber = date.getDate();
+  let months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
-                    <span class="input-group-text border-0" id="search-addon">
-                      <i class="fa fa-search" aria-hidden="true"></i>
-                    </span>
-                  </div>
-                </div>
-                <div class="col-5"></div>
-              </div>
-            </div>
-          </form>
-          <div class="row">
-            <div class="col-1"></div>
-            <div class="col-5">
-              <div class="actual-city">
-                <h1 id="city"><!-- Kyiv --></h1>
-                <p>
-                  <!-- Change -->
-                  <br />
-                  <span class="data-main" id="maindate"
-                    >Saturday, 6 August</span
-                  >
-                  <!-- Change -->
-                  <span class="data-main-green" id="maintime">12:00</span>
-                  <br />
-                  <span class="data-main">Wind: </span>
-                  <span class="data-main-green" id="wind-main"
-                    ><!-- 6m p/s--></span
-                  >
-                  <br />
-                  <span class="data-main">Humidity: </span>
-                  <span class="data-main-green" id="humidity-main"
-                    ><!-- 60% --></span
-                  >
-                  <!-- <br />
-                  <span class="data-main">UV index: </span>
-                  <span class="data-main-green">8</span> -->
-                </p>
-              </div>
-            </div>
-            <div class="col-5">
-              <div class="temp">
-                <h1 id="temperature-main"><!-- 28°C --></h1>
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  // define time variables
+  let dayName = days[date.getDay()];
+
+  //   console.log(dayNumber);
+  //   console.log(date);
+  let month = months[date.getMonth()];
+
+  // change day and month on the webpage
+  let maindate = document.querySelector("#maindate");
+  maindate.innerHTML = `${dayName}, ${dayNumber} ${month}`;
+
+  // change time on the webpage
+  let hours = String(date.getHours()).padStart(2, "0");
+  let minutes = String(date.getMinutes()).padStart(2, "0");
+  let maintime = document.querySelector("#maintime");
+
+  maintime.innerHTML = `${hours}:${minutes}`;
+}
+// gets coordinates
+function getForecast(coordinates) {
+  //   console.log(coordinates);
+  let apiKey = "10bd46f37313c8932e7471e0289ef79a";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayForecast);
+}
+
+// function that shows real temperature on the main page before reloading and after
+function showTemperature(response) {
+  console.log(response.data);
+  document.querySelector("#city").innerHTML = response.data.name;
+  celciusTemperature = response.data.main.temp;
+  let temperature = Math.round(celciusTemperature);
+  let temperatureElement = document.querySelector("#temperature-main");
+  let temperatureDescription = document.querySelector(
+    "#temperature-description"
+  );
+
+  temperatureElement.innerHTML = `${temperature}`;
+  temperatureDescription.innerHTML = response.data.weather[0].description;
+
+  let windSpeed = response.data.wind.speed;
+  let windElement = document.querySelector("#wind-main");
+
+  windElement.innerHTML = `${windSpeed} m/s`;
+
+  let humidity = response.data.main.humidity;
+  let humidityElement = document.querySelector("#humidity-main");
+
+  humidityElement.innerHTML = `${humidity}%`;
+
+  let iconElement = document.querySelector("#icon");
+  console.log(response.data.weather[0].description);
+
+  iconElement.setAttribute(
+    "src",
+    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+  );
+  iconElement.setAttribute("alt", response.data.weather[0].description);
+
+  getForecast(response.data.coord);
+}
+
+axios.get(apiUrl).then(showTemperature);
+
+function handleSubmit(event) {
+  event.preventDefault();
+  // let apiKey = "10bd46f37313c8932e7471e0289ef79a";
+  let cityName = document.querySelector("#search-input").value;
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=10bd46f37313c8932e7471e0289ef79a&units=metric`;
+  axios.get(apiUrl).then(showTemperature);
+}
+
+function formatD(timestamp) {
+  //   console.log(`this is ${timestamp}`);
+  let dateNew = new Date(timestamp * 1000);
+  //   console.log(`this is 2 ${dateNew}`);
+  let day = dateNew.getDay();
+  //   console.log(`this is 3 ${day}`);
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  //   console.log(`this is 4 ${days[day]}`);
+  return days[day];
+}
+
+function displayForecast(response) {
+  //   console.log(response.data.daily);
+  let forecast = response.data.daily;
+  let forecastElement = document.querySelector("#forecast");
+  let forecastHTML = `<div class="row">`;
+
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      console.log(forecastDay.weather[0].icon);
+      forecastHTML =
+        forecastHTML +
+        `
+              <div class="col-2">
+                <div class="weather-day">${formatD(forecastDay.dt)}</div>
                 <div class="weather-icon">
-                  <img src="" id="icon" alt="" class="sunny-icon" />
+                  <img src="http://openweathermap.org/img/wn/${
+                    forecastDay.weather[0].icon
+                  }@2x.png" alt="" width="42" />
                 </div>
-                <p>
-                  <span class="data-main" id="temperature-description"
-                    ><!-- sunny --></span
-                  >
-                </p>
+                <div class="weatherCard-temp">
+                  <span class="weatherCard-temp-max">${Math.round(
+                    forecastDay.temp.max
+                  )}°</span>
+                  <span class="weatherCard-temp-min">${Math.round(
+                    forecastDay.temp.min
+                  )}°</span>
+                </div>
               </div>
-            </div>
-            <div class="col-1"></div>
-          </div>
-          <div class="WeatherForecastCard" id="forecast"></div>
-        </div>
-      </div>
-    </div>
+  `;
+    }
+  });
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+}
 
-    <script src="index.js"></script>
-  </body>
-</html>
+function convertToFarenheit(event) {
+  event.preventDefault();
+  let temperatureElement = document.querySelector("#temperature-main");
+  temperatureElement.innerHTML = Math.round((celciusTemperature * 9) / 5 + 32);
+  celciusLink.classList.remove("active");
+  farenheitLink.classList.add("active");
+}
+
+function convertToCelcius(event) {
+  event.preventDefault();
+  let temperatureElement = document.querySelector("#temperature-main");
+  temperatureElement.innerHTML = Math.round(celciusTemperature);
+  celciusLink.classList.add("active");
+  farenheitLink.classList.remove("active");
+}
+
+let celciusTemperature = null;
+
+// Feature #0 this function shows the current city on the main page(depends on the variable "city")
+showCity();
+
+// Feature #1
+insertActualData();
+
+// Feature #2
+let specialButton = document.querySelector("#search-form");
+specialButton.addEventListener("submit", handleSubmit);
+
+let searchForm = document.querySelector("#search-addon");
+searchForm.addEventListener("click", handleSubmit);
+
+// Feature #3 Display cards
+// displayForecast();
+
+let farenheitLink = document.querySelector("#farenheit-link");
+farenheitLink.addEventListener("click", convertToFarenheit);
+
+let celciusLink = document.querySelector("#celcius-link");
+celciusLink.addEventListener("click", convertToCelcius);
